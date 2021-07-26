@@ -32,7 +32,6 @@ externalLogs.then((response) => {
         issuesToPush.push(issueToPush);
     });
     console.log('Issues that will be pushed:');
-    console.log(JSON.stringify(issuesToPush));
     issuesToPush.forEach((issue) => {
         const internalOptions = {
             method: 'POST',
