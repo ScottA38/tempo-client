@@ -1,3 +1,4 @@
 .idea
-credentials.json
+.tempo-credentials.json
+.db-credentials.json
 node_modules

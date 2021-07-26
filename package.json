@@ -9,6 +9,8 @@
   "author": "srmes",
   "license": "ISC",
   "dependencies": {
+    "jsum": "^2.0.0-alpha.3",
+    "mysql": "^2.18.1",
     "request-promise-native": "^1.0.9"
   }
 }
