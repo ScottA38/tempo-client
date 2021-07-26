@@ -1,0 +1,14 @@
+{
+  "name": "tempo-client",
+  "version": "1.0.0",
+  "description": "Simple scripts to help automate common time-logging activities with the Tempo JIRA plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "srmes",
+  "license": "ISC",
+  "dependencies": {
+    "request-promise-native": "^1.0.9"
+  }
+}
