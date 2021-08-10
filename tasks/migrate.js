@@ -5,8 +5,8 @@ const db = require('../db-connect');
 let clientName = 'summit';
 const externalData = userData[clientName];
 const internalData = userData.scandiweb;
-const date = '2021-07-22';
-const endDate = '2021-07-23';
+const date = '2021-07-27';
+const endDate = getFormattedCurrentDate();
 const externalOptions = {
     uri: `https://api.tempo.io/core/3/worklogs/user/${externalData.user}?from=${date}&to=${endDate}`,
     auth: {
@@ -14,6 +14,15 @@ const externalOptions = {
     }
 }
 const externalLogs = request(externalOptions);
+
+function getFormattedCurrentDate() {
+    let today = new Date();
+    return [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, '0'),
+        String(today.getDate()).padStart(2, '0')
+    ].join('-');
+}
 
 function getExistingClientLog(receivedId) {
     return new Promise(function (resolve, reject) {
