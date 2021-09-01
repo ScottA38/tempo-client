@@ -5,7 +5,7 @@ const db = require('../db-connect');
 let clientName = 'summit';
 const externalData = userData[clientName];
 const internalData = userData.scandiweb;
-const date = '2021-07-27';
+const date = '2021-08-31';
 const endDate = getFormattedCurrentDate();
 const externalOptions = {
     uri: `https://api.tempo.io/core/3/worklogs/user/${externalData.user}?from=${date}&to=${endDate}`,
@@ -55,7 +55,7 @@ function registerNewClientLog(issueResponse, clientId, clientName, clientHash) {
 }
 
 async function migrateIssue(issue) {
-    console.log(`Issue ${issue.issue.key}, started at ${issue.startTime} for ${issue.timeSpentSeconds} seconds`);
+    console.log(`Issue ${issue.issue.key}, logged ${issue.startDate} ${issue.startTime} for ${issue.timeSpentSeconds} seconds`);
     let issueKey = 'SM-1';
     const issueToPush = {
         issueKey,
@@ -86,7 +86,7 @@ async function migrateIssue(issue) {
                 console.log(response);
             })
             .catch(function(err) {
-                throw err;
+                console.error(err.options.uri + ' ' + err.options.method + ' ' + err.message);
             }
         );
     } else if (!existingLogRecord.length) {
@@ -105,7 +105,7 @@ async function migrateIssue(issue) {
             registerNewClientLog(response, issue.tempoWorklogId, clientName, clientIssueCheckSum);
             console.log(`Created new timelog ${response.tempoWorklogId}, mapping issue ${issue.issue.key} to ${issueKey}`);
         }).catch((err) => {
-            console.log(err);
+            console.error(err.options.uri + ' ' + err.options.method + ' ' + err.message);
         });
     }
 }
@@ -113,8 +113,10 @@ async function migrateIssue(issue) {
 externalLogs.then((response) => {
     const parsedResponse = JSON.parse(response);
     const issues = parsedResponse.results;
+    const delayBase = 1000;
 
-    issues.forEach((issue) => {
-        migrateIssue(issue);
+    issues.forEach((issue, index) => {
+        let loopDelay = delayBase * (index + 1);
+        setTimeout(migrateIssue, loopDelay, issue);
     });
 });
